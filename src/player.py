@@ -2,13 +2,15 @@ import pygame
 from settings import *
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self,pos,groups):
+	def __init__(self,pos,groups,obstacle_sprites):
 		super().__init__(groups)
 		self.image = pygame.image.load('../gfx/test/player.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
 
 		self.direction = pygame.math.Vector2()
 		self.speed = 5
+
+		self.obstacle_sprites = obstacle_sprites
 
 	def input(self):
 		# get pressed keys
@@ -34,8 +36,29 @@ class Player(pygame.sprite.Sprite):
 		# normalize vector to 1 to fix speed
 		if self.direction.magnitude() != 0:
 			self.direction = self.direction.normalize()
+
 		# apply delta to current position
-		self.rect.center += self.direction * speed
+		self.rect.x += self.direction.x * speed
+		self.collision('horizontal')
+		self.rect.y += self.direction.y * speed
+		self.collision('vertical')
+
+	def collision(self, direction):
+		if direction == 'horizontal':
+			for sprite in self.obstacle_sprites:
+				if sprite.rect.colliderect(self.rect):
+					if self.direction.x > 0: # moving right
+						self.rect.right = sprite.rect.left
+					elif self.direction.x < 0: # moving left
+						self.rect.left = sprite.rect.right
+
+		if direction == 'vertical':
+			for sprite in self.obstacle_sprites:
+				if sprite.rect.colliderect(self.rect):
+					if self.direction.y > 0: # moving down
+						self.rect.bottom = sprite.rect.top
+					elif self.direction.y < 0: # moving up
+						self.rect.top = sprite.rect.bottom
 
 	def update(self):
 		self.input()
