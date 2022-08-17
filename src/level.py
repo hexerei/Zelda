@@ -6,6 +6,7 @@ from debug import debug
 from support import *
 from random import choice
 from weapon import Weapon
+from ui import UI
 
 class Level:
 	def __init__(self):
@@ -19,28 +20,37 @@ class Level:
 		# sprite setup
 		self.create_map()
 
+		# user interface
+		self.ui = UI()
+
 	def create_map(self):
+
 		layouts = {
 			'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
 			'grass': import_csv_layout('../map/map_Grass.csv'),
 			'object': import_csv_layout('../map/map_LargeObjects.csv')
 		}
+
 		graphics = {
 			'grass': import_folder('../gfx/grass'),
 			'object': import_folder('../gfx/objects'),
 		}
-		print(graphics['grass'])
+
 		for style, layout in layouts.items():
 			for row_index, row in enumerate(layout):
 				for col_index, col in enumerate(row):
 					if col != '-1':
+
 						x = col_index * TILESIZE
 						y = row_index * TILESIZE
+
 						if style == 'boundary':
 							Tile((x,y), [self.obstacle_sprites], 'invisible')
+
 						if style == 'grass':
 							random_grass_image = choice(graphics['grass'])
 							Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'grass', random_grass_image)
+
 						if style == 'object':
 							Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', graphics['object'][int(col)])
 
@@ -58,6 +68,7 @@ class Level:
 		# update and draw the game
 		self.visible_sprites.custom_draw(self.player)
 		self.visible_sprites.update()
+		self.ui.display(self.player)
 
 class YSortCameraGroup(pygame.sprite.Group):
 
