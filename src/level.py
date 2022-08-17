@@ -7,7 +7,7 @@ from support import *
 from random import choice
 from weapon import Weapon
 from ui import UI
-
+from enemy import Enemy
 class Level:
 	def __init__(self):
 
@@ -28,7 +28,8 @@ class Level:
 		layouts = {
 			'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
 			'grass': import_csv_layout('../map/map_Grass.csv'),
-			'object': import_csv_layout('../map/map_LargeObjects.csv')
+			'object': import_csv_layout('../map/map_LargeObjects.csv'),
+			'entities': import_csv_layout('../map/map_Entities.csv')
 		}
 
 		graphics = {
@@ -54,14 +55,24 @@ class Level:
 						if style == 'object':
 							Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', graphics['object'][int(col)])
 
-		self.player = Player(
-			(2000,1430), 
-			[self.visible_sprites], 
-			self.obstacle_sprites, 
-			self.create_attack, 
-			self.destroy_attack,
-			self.create_magic
-		)
+						if style == 'entities':
+							if col == '394':
+								self.player = Player(
+									(x,y), 
+									[self.visible_sprites], 
+									self.obstacle_sprites, 
+									self.create_attack, 
+									self.destroy_attack,
+									self.create_magic
+								)
+							else:
+								if col == '390': monster_name = 'bamboo'
+								elif col == '391': monster_name = 'spirit'
+								elif col == '392': monster_name = 'raccoon'
+								else: monster_name = 'squid'
+								Enemy(monster_name, (x,y), [self.visible_sprites], self.obstacle_sprites)
+
+
 
 	def create_attack(self):
 		self.current_attack = Weapon(self.player,[self.visible_sprites])
