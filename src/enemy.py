@@ -5,7 +5,7 @@ from support import import_folder
 
 class Enemy(Entity):
 
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, damage_player):
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, damage_player, trigger_death_particles):
 
         # general setup
         super().__init__(groups)
@@ -32,12 +32,13 @@ class Enemy(Entity):
         self.attack_radius = monster_info['attack_radius']
         self.notice_radius = monster_info['notice_radius']
         self.attack_type = monster_info['attack_type']
-        self.damage_player = damage_player
 
         # player interaction
         self.can_attack = True
         self.attack_time = None
         self.attack_cooldown = 400
+        self.damage_player = damage_player
+        self.trigger_death_particles = trigger_death_particles
 
         # invincibiilty timer
         self.vulnerable = True
@@ -126,6 +127,7 @@ class Enemy(Entity):
     def check_death(self):
         if self.health <= 0:
             self.kill()
+            self.trigger_death_particles(self.rect.center, self.monster_name)
 
     def update(self):
         self.hit_reaction()
