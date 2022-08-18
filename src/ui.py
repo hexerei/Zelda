@@ -33,7 +33,7 @@ class UI:
         current_rect = bg_rect.copy()
         current_rect.width = current_width
         # draw bar
-        draw_rect_alpha(self.display_surface, color, current_rect, 160)
+        pygame.draw.rect(self.display_surface, color, current_rect, 160)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
 
     def show_exp(self, exp):
