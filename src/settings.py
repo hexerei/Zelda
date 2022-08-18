@@ -33,7 +33,7 @@ UI_BORDER_COLOR_ACTIVE = 'gold'
 TEXT_COLOR_SELECTED = '#111111'
 BAR_COLOR = '#eeeeee'
 BAR_COLOR_SELECTED = '#111111'
-UPGRADE_BG_COLOR_SELECTED = '#eeeeee'
+UPGRADE_BG_COLOR_SELECTED = '#fffeee'
 
 # weapons
 weapon_data = {
