@@ -46,13 +46,18 @@ class Player(Entity):
 		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}
 		self.health = self.stats['health'] * 0.5
 		self.energy = self.stats['energy'] * 0.8
-		self.exp = 500
+		self.exp = 5000
 		self.speed = self.stats['speed']
 
         # invincibiilty timer
 		self.vulnerable = True
 		self.hurt_time = None
 		self.invincibility_duration = 300
+
+		# import a sound
+		if SOUND:
+			self.weapon_attack_sound = pygame.mixer.Sound('../sfx/sword.wav')
+			self.weapon_attack_sound.set_volume(0.4)
 
 	def import_player_assets(self):
 		charcter_path = '../gfx/player/'
@@ -107,6 +112,7 @@ class Player(Entity):
 				self.attacking = True
 				self.attack_time = pygame.time.get_ticks()
 				self.create_attack()
+				if SOUND: self.weapon_attack_sound.play()
 
 			# check for magic
 			if keys[pygame.K_LALT] and not self.attacking:
@@ -222,4 +228,4 @@ class Player(Entity):
 		self.animate()
 		self.move(self.speed)
 		self.energy_recovery()
-		debug(self.status)
+		# debug(self.status)

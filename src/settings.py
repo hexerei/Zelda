@@ -9,6 +9,7 @@ HITBOX_OFFSET = {
 	'grass': -10,
 	'invisible': 0
 }
+SOUND = False
 
 # ui
 BAR_HEIGHT = 20
