@@ -11,8 +11,10 @@ from enemy import Enemy
 from particles import AnimationPlayer
 from magic import MagicPlayer
 from upgrade import Upgrade
+#from sound import SoundPlayer
+
 class Level:
-	def __init__(self):
+	def __init__(self, sound_player):
 
 		# sprite group setup
 		self.visible_sprites = YSortCameraGroup()
@@ -23,6 +25,9 @@ class Level:
 		self.attack_sprites = pygame.sprite.Group()
 		self.attackable_sprites = pygame.sprite.Group()
 
+		# sound
+		self.sound = sound_player
+		self.sound.play('main', -1)
 
 		# sprite setup
 		self.create_map()
@@ -77,7 +82,8 @@ class Level:
 									self.obstacle_sprites, 
 									self.create_attack, 
 									self.destroy_attack,
-									self.create_magic
+									self.create_magic,
+									self.sound
 								)
 							else:
 								if col == '390': monster_name = 'bamboo'
@@ -91,7 +97,8 @@ class Level:
 									self.obstacle_sprites,
 									self.damage_player,
 									self.trigger_death_particles,
-									self.add_exp
+									self.add_exp,
+									self.sound
 								)
 
 	def create_attack(self):

@@ -6,9 +6,9 @@ from entity import Entity
 
 class Player(Entity):
 
-	def __init__(self,pos,groups,obstacle_sprites, create_attack, destroy_attack, create_magic):
+	def __init__(self, pos,groups,obstacle_sprites, create_attack, destroy_attack, create_magic, sound_player):
 
-		super().__init__(groups)
+		super().__init__(groups, sound_player)
 
 		self.image = pygame.image.load('../gfx/test/player.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
@@ -53,11 +53,6 @@ class Player(Entity):
 		self.vulnerable = True
 		self.hurt_time = None
 		self.invincibility_duration = 300
-
-		# import a sound
-		if SOUND:
-			self.weapon_attack_sound = pygame.mixer.Sound('../sfx/sword.wav')
-			self.weapon_attack_sound.set_volume(0.4)
 
 	def import_player_assets(self):
 		charcter_path = '../gfx/player/'
@@ -112,7 +107,7 @@ class Player(Entity):
 				self.attacking = True
 				self.attack_time = pygame.time.get_ticks()
 				self.create_attack()
-				if SOUND: self.weapon_attack_sound.play()
+				self.sound.play('player_attack')
 
 			# check for magic
 			if keys[pygame.K_LALT] and not self.attacking:

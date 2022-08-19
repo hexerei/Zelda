@@ -1,6 +1,7 @@
 import pygame, sys
 from settings import *
 from level import Level
+from sound import SoundPlayer
 
 class Game:
 	def __init__(self):
@@ -11,14 +12,12 @@ class Game:
 		pygame.display.set_caption('Zelda')
 		self.clock = pygame.time.Clock()
 
-		self.level = Level()
+		self.sound = SoundPlayer()
+		self.sound.volume(0.8)
+		self.sound.preload()
 
-		# sound
-		if SOUND:
-			main_sound = pygame.mixer.Sound('../sfx/main.ogg')
-			main_sound.set_volume(0.5)
-			main_sound.play(loops = -1)
-	
+		self.level = Level(self.sound)
+
 	def run(self):
 		while True:
 			for event in pygame.event.get():
