@@ -38,7 +38,7 @@ class Level:
 
 		# particles
 		self.animation_player = AnimationPlayer()
-		self.magic_player = MagicPlayer(self.animation_player)
+		self.magic_player = MagicPlayer(self.animation_player, self.sound)
 
 	def create_map(self):
 
